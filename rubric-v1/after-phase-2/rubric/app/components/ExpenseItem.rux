@@ -1,0 +1,61 @@
+module ExpenseItem {
+  @ "Presentation component for displaying individual expense"
+  @ "Pure component with delete action handling"
+
+  type: "presentation"
+  
+  location: "src/components/ExpenseItem.tsx"
+  
+  interface {
+    @ "Props interface"
+    public type ExpenseItemProps
+    
+    @ "Default export for the item component"
+    public function default() -> JSX.Element
+  }
+  
+  state {
+    @ "No local state - pure presentation component"
+  }
+  
+  imports {
+    @ "React"
+    allow "react" as external
+    
+    @ "Icons"
+    allow "lucide-react" as external
+    
+    @ "Formatting utilities"
+    allow "../utils/formatting" as {formatCurrency, formatDate, getCategoryColor}
+    
+    @ "Type imports"
+    allow "../types/expense.types" as types
+    
+    @ "Cannot import stores, services, or data"
+    deny imports ["../stores/*", "../services/*", "../data/*"]
+  }
+  
+  constraints {
+    @ "Pure component - no side effects"
+    deny io.*
+    deny pattern.side_effects
+    
+    @ "Props-only data"
+    require pattern.props_only
+    
+    @ "No business logic"
+    deny pattern.business_logic
+    
+    @ "Accessibility requirements"
+    require pattern.aria_label
+    require pattern.keyboard_navigation
+    require pattern.focus_management
+    
+    @ "Testing support"
+    require pattern.data_testid
+    
+    @ "Size constraints"
+    warn file.lines > 100
+    deny file.lines > 150
+  }
+}

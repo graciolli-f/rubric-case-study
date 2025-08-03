@@ -1,0 +1,57 @@
+module CategoryFilter {
+  @ "Presentation component for category filtering"
+  @ "Displays filter buttons for expense categories with counts"
+
+  type: "presentation"
+  
+  location: "src/components/CategoryFilter.tsx"
+  
+  interface {
+    @ "Props interface for category filter"
+    public type CategoryFilterProps
+    
+    @ "Default export for the filter component"
+    public function default() -> JSX.Element
+  }
+  
+  state {
+    @ "No local state - pure presentation component"
+  }
+  
+  imports {
+    @ "React and UI libraries"
+    allow "react" as external
+    
+    @ "Type imports"
+    allow "../types/expense.types" as types
+    
+    @ "Cannot import stores, services, or data layers"
+    deny imports ["../stores/*", "../services/*", "../data/*"]
+    deny imports ["../hooks/*"]
+  }
+  
+  constraints {
+    @ "Pure presentation component constraints"
+    deny pattern.local_state @ "No useState, useReducer, or local state"
+    deny pattern.side_effects @ "No useEffect or side effects"
+    deny io.network.*
+    deny io.localStorage.*
+    deny io.console.*
+    
+    @ "Must be props-only"
+    require pattern.props_only @ "All data via props"
+    require pattern.pure_component @ "Deterministic rendering"
+    
+    @ "Accessibility requirements"
+    require pattern.aria_label
+    require pattern.keyboard_navigation
+    require pattern.focus_management
+    
+    @ "Testing requirements"
+    require pattern.data_testid
+    
+    @ "Size constraints"
+    warn file.lines > 150
+    deny file.lines > 200
+  }
+}

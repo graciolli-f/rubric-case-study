@@ -1,0 +1,75 @@
+module ValidationUtils {
+  @ "Pure validation functions for expense form data"
+  @ "No side effects, deterministic validation logic"
+
+  type: "utility"
+  
+  location: "src/utils/validation.ts"
+  
+  interface {
+    @ "Expense validation functions"
+    public function validateAmount() -> boolean
+    public function validateDescription() -> boolean
+    public function validateCategory() -> boolean
+    public function validateDate() -> boolean
+    
+    @ "Form validation orchestration"
+    public function validateExpenseForm() -> Object
+    public function getValidationErrors() -> Array
+    
+    @ "Validation helpers"
+    public function isPositiveNumber() -> boolean
+    public function isValidDate() -> boolean
+    public function isFutureDate() -> boolean
+    
+    @ "Validation constants"
+    public readonly VALIDATION_RULES: Object
+  }
+  
+  state {
+    @ "Validation configuration constants"
+    private readonly MIN_DESCRIPTION_LENGTH: number
+    private readonly MAX_DESCRIPTION_LENGTH: number
+    private readonly VALID_CATEGORIES: Array
+    private readonly ERROR_MESSAGES: Object
+  }
+  
+  imports {
+    @ "Types for validation"
+    allow "../types/expense.types" as types
+    
+    @ "No framework imports"
+    deny imports ["react", "vue", "@angular/*"]
+    
+    @ "No side-effect imports"
+    deny imports ["../stores/*", "../services/*", "../data/*", "../components/*"]
+  }
+  
+  constraints {
+    @ "Pure functions only"
+    deny io.*
+    deny pattern.side_effects
+    deny pattern.mutations
+    
+    @ "No async operations"
+    deny pattern.async
+    deny pattern.promises
+    
+    @ "Deterministic behavior"
+    require pattern.deterministic
+    deny pattern.date_now @ "Use passed timestamps"
+    
+    @ "Error handling"
+    require pattern.defensive
+    
+    @ "Documentation"
+    require pattern.jsdoc
+    
+    @ "Export all public functions"
+    require exports.public_functions
+    
+    @ "Size constraints"
+    warn file.lines > 150
+    deny file.lines > 300
+  }
+}

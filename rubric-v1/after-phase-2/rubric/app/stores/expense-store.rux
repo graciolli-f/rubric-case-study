@@ -1,0 +1,64 @@
+module ExpenseStore {
+  @ "State management for expense tracking"
+  @ "Coordinates between UI and local storage operations"
+
+  type: "store"
+  
+  location: "src/stores/expense-store.ts"
+  
+  interface {
+    @ "Zustand store hook"
+    public function useExpenseStore() -> Object
+  }
+  
+  state {
+    @ "Internal state shape"
+    private _expenses: Array
+    private _isLoading: boolean
+    private _error: string?
+    private _total: number
+    
+    @ "Form state"
+    private _isSubmitting: boolean
+    private _validationErrors: Object
+  }
+  
+  imports {
+    @ "State management library"
+    allow "zustand" as external
+    allow "immer" as external
+    
+    @ "Types"
+    allow "../types/expense.types" as types
+    
+    @ "Validation utilities"
+    allow "../utils/validation" as {validateExpenseForm}
+    
+    @ "Formatting utilities"
+    allow "../utils/formatting" as {formatCurrency}
+    
+    @ "Cannot import components"
+    deny imports ["../components/*"]
+    
+    @ "Cannot import services or data layers"
+    deny imports ["../services/*", "../data/*"]
+  }
+  
+  constraints {
+    @ "State management patterns"
+    require pattern.immutable
+    
+    @ "DevTools support - console allowed"
+    warn io.console.*
+    
+    @ "Performance"
+    require pattern.memoization
+    
+    @ "Export restrictions"
+    deny exports.private_functions
+    
+    @ "Size constraints"
+    warn file.lines > 200
+    deny file.lines > 400
+  }
+}

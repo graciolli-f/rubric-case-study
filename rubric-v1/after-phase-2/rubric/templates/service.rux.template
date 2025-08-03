@@ -1,0 +1,75 @@
+module [ServiceName]Service {
+  @ "Business logic for [domain/feature]"
+  @ "Orchestrates data operations and enforces business rules"
+
+  type: "service"
+  
+  location: "src/services/[service-name]-service.ts"
+  
+  interface {
+    @ "Public service methods"
+    public function create[Entity]() -> Promise
+    public function update[Entity]() -> Promise
+    public function delete[Entity]() -> Promise
+    public function get[Entity]() -> Promise
+    public function list[Entities]() -> Promise
+    
+    @ "Business operations"
+    public function validate[Entity]() -> Object
+    public function calculate[Something]() -> Object
+    public function process[Operation]() -> Promise
+  }
+  
+  state {
+    @ "Service-level caching"
+    private _cache: Object
+    private _cacheExpiry: Object
+    
+    @ "Service configuration"
+    private _config: Object
+  }
+  
+  imports {
+    @ "Data layer imports"
+    allow "../data/[entity]-data" as {[entityData]}
+    
+    @ "Other services for composition"
+    allow "./[other]-service" as {[otherService]}
+    
+    @ "Types and interfaces"
+    allow "../types" as types
+    
+    @ "Utilities"
+    allow "../utils/validation" as validators
+    allow "../utils/errors" as {AppError, ErrorCode}
+    
+    @ "External libraries"
+    allow "date-fns" as external
+    allow "zod" as external
+    
+    @ "Cannot import UI or stores"
+    deny imports ["../components/*", "../stores/*"]
+  }
+  
+  constraints {
+    @ "Error handling required"
+    require pattern.try_catch
+    
+    @ "No UI concerns"
+    deny imports ["react", "@mui/material"]
+    
+    @ "Business logic validation"
+    require security.input_validation
+    
+    @ "Logging for debugging"
+    allow io.console.error
+    allow io.console.warn
+    
+    @ "Export only public interface"
+    deny exports.private_functions
+    
+    @ "Complexity management"
+    warn file.lines > 300
+    deny file.lines > 500
+  }
+}

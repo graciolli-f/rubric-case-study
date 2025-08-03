@@ -1,0 +1,69 @@
+module ExpenseForm {
+  @ "Container component for expense form"
+  @ "Manages form state and validation"
+
+  type: "container"
+  
+  location: "src/components/ExpenseForm.tsx"
+  
+  interface {
+    @ "Default export for the form component"
+    public function default() -> JSX.Element
+  }
+  
+  state {
+    @ "Local form state"
+    private formData: Object
+    private validationErrors: Object
+    private isSubmitting: boolean
+    private isDirty: boolean
+  }
+  
+  imports {
+    @ "React and UI libraries"
+    allow "react" as external
+    allow "lucide-react" as external
+    
+    @ "Store for expense management"
+    allow "../stores/expense-store" as {useExpenseStore}
+    
+    @ "Validation utilities"
+    allow "../utils/validation" as {validateExpenseForm, getValidationErrors}
+    
+    @ "Formatting utilities"
+    allow "../utils/formatting" as {formatDateForInput}
+    
+    @ "Type imports"
+    allow "../types/expense.types" as types
+    
+    @ "Cannot import services or data layers directly"
+    deny imports ["../services/*", "../data/*"]
+  }
+  
+  constraints {
+    @ "No direct API calls"
+    deny io.network.*
+    
+    @ "No direct storage access"
+    deny io.localStorage.*
+    
+    @ "Limited console usage"
+    warn io.console.*
+    
+    @ "Must handle loading and error states"
+    require pattern.error_boundary
+    require pattern.loading_state
+    
+    @ "Accessibility requirements"
+    require pattern.aria_label
+    require pattern.keyboard_navigation
+    require pattern.focus_management
+    
+    @ "Form validation requirements"
+    require pattern.data_testid
+    
+    @ "Size constraints"
+    warn file.lines > 200
+    deny file.lines > 300
+  }
+}

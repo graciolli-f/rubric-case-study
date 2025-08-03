@@ -1,0 +1,72 @@
+module [GuardName]Guard {
+  @ "Route guard for [protection purpose]"
+  @ "Protects routes that require [condition]"
+
+  type: "guard"
+  
+  location: "src/guards/[GuardName]Guard.tsx"
+  
+  interface {
+    @ "Guard component"
+    public function [GuardName]Guard() -> JSX.Element
+    
+    @ "Hook for checking guard condition"
+    public function use[GuardName]Check() -> Object
+    
+    @ "HOC variant"
+    public function require[GuardName]() -> Function
+  }
+  
+  state {
+    @ "Guard state"
+    private _isChecking: boolean
+    private _checkResult: boolean?
+    private _reason: string?
+  }
+  
+  imports {
+    @ "React and routing"
+    allow "react" as external
+    allow "react-router-dom" as {Navigate, useNavigate}
+    
+    @ "Auth/permission stores"
+    allow "../stores/auth-store" as {useAuthStore}
+    allow "../stores/permission-store" as {usePermissionStore}
+    
+    @ "Types"
+    allow "../types" as types
+    
+    @ "Other guards for composition"
+    allow "./[OtherGuard]Guard" as {[OtherGuard]Guard}
+    
+    @ "Loading component"
+    allow "../components/LoadingSpinner" as {LoadingSpinner}
+    
+    @ "Cannot import services directly"
+    deny imports ["../services/*"]
+    
+    @ "Cannot import data layer"
+    deny imports ["../data/*"]
+  }
+  
+  constraints {
+    @ "Guard patterns"
+    require pattern.loading_state @ "Show loading while checking"
+    
+    @ "Security"
+    require security.input_validation
+    
+    @ "Performance"
+    require pattern.memoization @ "Don't re-check unnecessarily"
+    
+    @ "Error handling"
+    require pattern.graceful_fallback @ "Don't crash on check failure"
+    
+    @ "Export restrictions"
+    deny exports.private_functions
+    
+    @ "Size constraints"
+    warn file.lines > 100
+    deny file.lines > 200
+  }
+}

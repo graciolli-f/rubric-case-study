@@ -1,0 +1,64 @@
+module App {
+  @ "Root container component for expense tracking application"
+  @ "Orchestrates main components and provides global layout"
+
+  type: "container"
+  
+  location: "src/App.tsx"
+  
+  interface {
+    @ "Default export for the app component"
+    public function default() -> JSX.Element
+  }
+  
+  state {
+    @ "Minimal global UI state"
+    private showDeleteDialog: boolean
+    private selectedExpenseId: string?
+  }
+  
+  imports {
+    @ "React and UI libraries"
+    allow "react" as external
+    
+    @ "Child components for composition"
+    allow "./components/ExpenseForm" as {ExpenseForm}
+    allow "./components/ExpenseList" as {ExpenseList}
+    allow "./components/DeleteConfirmDialog" as {DeleteConfirmDialog}
+    
+    @ "Store for expense management"
+    allow "./stores/expense-store" as {useExpenseStore}
+    
+    @ "Type imports"
+    allow "./types/expense.types" as types
+    
+    @ "Cannot import services or data layers directly"
+    deny imports ["./services/*", "./data/*"]
+  }
+  
+  constraints {
+    @ "No direct API calls"
+    deny io.network.*
+    
+    @ "No direct storage access"
+    deny io.localStorage.*
+    
+    @ "Limited console usage for development"
+    warn io.console.*
+    
+    @ "No business logic"
+    deny pattern.business_logic
+    
+    @ "Must handle loading and error states from stores"
+    require pattern.error_boundary
+    require pattern.loading_state
+    
+    @ "Accessibility requirements"
+    require pattern.aria_label
+    require pattern.focus_management
+    
+    @ "Size constraints"
+    warn file.lines > 150
+    deny file.lines > 250
+  }
+}

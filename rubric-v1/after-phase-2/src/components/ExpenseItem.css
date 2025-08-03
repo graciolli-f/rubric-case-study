@@ -1,0 +1,216 @@
+/* Expense Item Styles */
+.expense-item {
+  padding: 16px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: background-color 0.2s;
+}
+
+.expense-item:hover {
+  background: #f9fafb;
+}
+
+.expense-item:last-child {
+  border-bottom: none;
+}
+
+.expense-item__category {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.expense-item__category--food {
+  background: #10b981;
+}
+
+.expense-item__category--transport {
+  background: #3b82f6;
+}
+
+.expense-item__category--shopping {
+  background: #8b5cf6;
+}
+
+.expense-item__category--entertainment {
+  background: #f59e0b;
+}
+
+.expense-item__category--bills {
+  background: #dc2626;
+}
+
+.expense-item__category--other {
+  background: #6b7280;
+}
+
+.expense-item__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.expense-item__description {
+  font-weight: 500;
+  color: #1f2937;
+  margin: 0 0 4px 0;
+  font-size: 0.875rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.expense-item__meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.expense-item__category-text {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.expense-item__amount {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.expense-item__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.expense-item__delete {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: color 0.2s, background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.expense-item__delete:hover {
+  color: #dc2626;
+  background: #fef2f2;
+}
+
+.expense-item__delete:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
+}
+
+.expense-item__delete-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  .expense-item {
+    padding: 12px 20px;
+    gap: 12px;
+  }
+  
+  .expense-item__meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .expense-item__amount {
+    font-size: 0.875rem;
+  }
+  
+  .expense-item__description {
+    font-size: 0.8125rem;
+  }
+}
+
+/* Editing functionality styles */
+.expense-item--clickable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.expense-item--clickable:hover {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.expense-item--clickable:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+  background: #f8fafc;
+}
+
+.expense-item--editing {
+  position: relative;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  background: #eff6ff;
+}
+
+.expense-item__editing-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(37, 99, 235, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  backdrop-filter: blur(2px);
+  z-index: 10;
+}
+
+.expense-item__editing-text {
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Prevent hover effects when editing */
+.expense-item--editing:hover {
+  transform: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Dim other items when one is being edited */
+.expense-list--editing .expense-item:not(.expense-item--editing) {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Animation for editing state */
+.expense-item--editing {
+  animation: editingPulse 2s ease-in-out infinite;
+}
+
+@keyframes editingPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+  }
+}
