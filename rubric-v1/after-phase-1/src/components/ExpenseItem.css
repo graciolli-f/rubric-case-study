@@ -1,0 +1,141 @@
+/* Expense Item Styles */
+.expense-item {
+  padding: 16px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: background-color 0.2s;
+}
+
+.expense-item:hover {
+  background: #f9fafb;
+}
+
+.expense-item:last-child {
+  border-bottom: none;
+}
+
+.expense-item__category {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.expense-item__category--food {
+  background: #10b981;
+}
+
+.expense-item__category--transport {
+  background: #3b82f6;
+}
+
+.expense-item__category--shopping {
+  background: #8b5cf6;
+}
+
+.expense-item__category--entertainment {
+  background: #f59e0b;
+}
+
+.expense-item__category--bills {
+  background: #dc2626;
+}
+
+.expense-item__category--other {
+  background: #6b7280;
+}
+
+.expense-item__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.expense-item__description {
+  font-weight: 500;
+  color: #1f2937;
+  margin: 0 0 4px 0;
+  font-size: 0.875rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.expense-item__meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.expense-item__category-text {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.expense-item__amount {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.expense-item__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.expense-item__delete {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: color 0.2s, background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.expense-item__delete:hover {
+  color: #dc2626;
+  background: #fef2f2;
+}
+
+.expense-item__delete:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
+}
+
+.expense-item__delete-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  .expense-item {
+    padding: 12px 20px;
+    gap: 12px;
+  }
+  
+  .expense-item__meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .expense-item__amount {
+    font-size: 0.875rem;
+  }
+  
+  .expense-item__description {
+    font-size: 0.8125rem;
+  }
+}

@@ -1,0 +1,56 @@
+module [ComponentName] {
+  @ "Pure presentation component for displaying [what it displays]"
+  @ "Props-only, no stores or external state"
+
+  type: "presentation"
+  
+  location: "src/components/[ComponentName].tsx"
+  
+  interface {
+    @ "Props interface"
+    public function [ComponentName]() -> JSX.Element
+  }
+  
+  state {
+    @ "Minimal local state for UI interactions only"
+    private isHovered: boolean
+    private isExpanded: boolean
+  }
+  
+  imports {
+    @ "React only"
+    allow "react" as external
+    
+    @ "UI libraries"
+    allow "@mui/material" as external
+    allow "lucide-react" as external
+    allow "clsx" as external
+    
+    @ "Type imports only"
+    allow "../types" as types
+    
+    @ "UI-specific utilities only"
+    allow "../utils/format" as {formatDate, formatCurrency}
+    
+    @ "No stores, services, or data access"
+    deny imports ["../stores/*", "../services/*", "../data/*", "../hooks/*"]
+  }
+  
+  constraints {
+    @ "No side effects"
+    deny io.*
+    
+    @ "No async operations"
+    deny pattern.async
+    
+    @ "Export restrictions"
+    deny exports.private_functions
+    
+    @ "Keep it simple"
+    warn file.lines > 100
+    deny file.lines > 150
+    
+    @ "Performance"
+    require pattern.memo
+  }
+}

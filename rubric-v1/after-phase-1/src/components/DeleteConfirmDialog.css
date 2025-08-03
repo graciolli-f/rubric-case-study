@@ -1,0 +1,154 @@
+/* Delete Confirmation Dialog Styles */
+.delete-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.delete-dialog {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  max-width: 400px;
+  width: 100%;
+  padding: 24px;
+  position: relative;
+}
+
+.delete-dialog__icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  color: #dc2626;
+  display: block;
+}
+
+.delete-dialog__title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 8px 0;
+  color: #1f2937;
+}
+
+.delete-dialog__message {
+  font-size: 0.875rem;
+  color: #6b7280;
+  text-align: center;
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+}
+
+.delete-dialog__expense-name {
+  font-weight: 500;
+  color: #374151;
+}
+
+.delete-dialog__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.delete-dialog__button {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+  border: 1px solid;
+  min-width: 80px;
+}
+
+.delete-dialog__button--cancel {
+  background: white;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+.delete-dialog__button--cancel:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.delete-dialog__button--cancel:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #3b82f6;
+}
+
+.delete-dialog__button--delete {
+  background: #dc2626;
+  color: white;
+  border-color: #dc2626;
+}
+
+.delete-dialog__button--delete:hover {
+  background: #b91c1c;
+  border-color: #b91c1c;
+}
+
+.delete-dialog__button--delete:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+}
+
+/* Focus trap styles */
+.delete-dialog[data-focus-trap="true"] {
+  /* Ensure dialog content is focusable */
+  outline: none;
+}
+
+/* Animation */
+.delete-dialog-overlay {
+  animation: fadeIn 0.15s ease-out;
+}
+
+.delete-dialog {
+  animation: scaleIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  .delete-dialog {
+    padding: 20px;
+    margin: 0 16px;
+  }
+  
+  .delete-dialog__actions {
+    flex-direction: column;
+  }
+  
+  .delete-dialog__button {
+    width: 100%;
+  }
+}

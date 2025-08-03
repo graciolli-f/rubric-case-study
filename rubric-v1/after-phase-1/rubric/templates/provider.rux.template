@@ -1,0 +1,65 @@
+module [ProviderName]Provider {
+  @ "React Context Provider for [feature/cross-cutting concern]"
+  @ "Provides [what it provides] to child components"
+
+  type: "provider"
+  
+  location: "src/providers/[ProviderName]Provider.tsx"
+  
+  interface {
+    @ "Provider component"
+    public function [ProviderName]Provider() -> JSX.Element
+    
+    @ "Context hook"
+    public function use[ProviderName]() -> Object
+    
+    @ "Optional HOC"
+    public function with[ProviderName]() -> Function
+  }
+  
+  state {
+    @ "Context value shape"
+    private contextValue: Object
+    
+    @ "Provider internal state"
+    private _initialized: boolean
+  }
+  
+  imports {
+    @ "React for context"
+    allow "react" as external
+    
+    @ "Can use stores for state"
+    allow "../stores/[store]" as {use[Store]}
+    
+    @ "Can use services"
+    allow "../services/[service]" as {[service]}
+    
+    @ "Can use hooks"
+    allow "../hooks/[hook]" as {use[Hook]}
+    
+    @ "Types"
+    allow "../types" as types
+    
+    @ "Cannot import components (except children)"
+    deny imports ["../components/*"]
+    
+    @ "Cannot import data layer"
+    deny imports ["../data/*"]
+  }
+  
+  constraints {
+    @ "Provider patterns"
+    require pattern.error_boundary @ "Catch provider errors"
+    
+    @ "Performance"
+    require pattern.memoization @ "Prevent unnecessary renders"
+    
+    @ "Export restrictions"
+    deny exports.private_functions
+    
+    @ "Size constraints"
+    warn file.lines > 150
+    deny file.lines > 250
+  }
+}

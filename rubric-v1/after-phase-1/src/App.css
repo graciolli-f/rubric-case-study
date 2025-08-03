@@ -1,0 +1,126 @@
+/* Global app styles */
+.app {
+  min-height: 100vh;
+  background: #f3f4f6;
+  padding: 20px;
+}
+
+.app__container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.app__header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.app__title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 8px 0;
+}
+
+.app__subtitle {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.app__content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Error boundary styles */
+.app__error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 16px;
+  color: #dc2626;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.app__error-title {
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.app__error-message {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+/* Loading state */
+.app__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: #6b7280;
+}
+
+.app__loading-spinner {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 12px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  .app {
+    padding: 16px;
+  }
+  
+  .app__title {
+    font-size: 1.5rem;
+  }
+  
+  .app__content {
+    gap: 20px;
+  }
+}
+
+/* Focus styles for better accessibility */
+*:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+button:focus,
+input:focus,
+select:focus {
+  outline: none;
+}
+
+/* Skip to content link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #3b82f6;
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1001;
+}
+
+.skip-link:focus {
+  top: 6px;
+}

@@ -1,0 +1,79 @@
+module FormattingUtils {
+  @ "Pure formatting functions for display purposes"
+  @ "Currency, date, and text formatting utilities"
+
+  type: "utility"
+  
+  location: "src/utils/formatting.ts"
+  
+  interface {
+    @ "Currency formatting"
+    public function formatCurrency() -> string
+    public function parseCurrencyInput() -> number
+    
+    @ "Date formatting"
+    public function formatDate() -> string
+    public function formatDateForInput() -> string
+    
+    @ "Text formatting"
+    public function capitalizeFirst() -> string
+    public function truncateText() -> string
+    
+    @ "Category formatting"
+    public function getCategoryColor() -> string
+    public function getCategoryLabel() -> string
+    
+    @ "Formatting constants"
+    public readonly CURRENCY_CONFIG: Object
+    public readonly DATE_FORMATS: Object
+  }
+  
+  state {
+    @ "Formatting configuration constants"
+    private readonly CURRENCY_LOCALE: string
+    private readonly CURRENCY_SYMBOL: string
+    private readonly CATEGORY_COLORS: Object
+    private readonly DATE_FORMAT_OPTIONS: Object
+  }
+  
+  imports {
+    @ "Types for formatting"
+    allow "../types/expense.types" as types
+    
+    @ "Pure external libraries for date formatting"
+    allow "date-fns" as external
+    
+    @ "No framework imports"
+    deny imports ["react", "vue", "@angular/*"]
+    
+    @ "No side-effect imports"
+    deny imports ["../stores/*", "../services/*", "../data/*", "../components/*"]
+  }
+  
+  constraints {
+    @ "Pure functions only"
+    deny io.*
+    deny pattern.side_effects
+    deny pattern.mutations
+    
+    @ "No async operations"
+    deny pattern.async
+    deny pattern.promises
+    
+    @ "Deterministic behavior"
+    require pattern.deterministic
+    
+    @ "Error handling"
+    require pattern.defensive
+    
+    @ "Documentation"
+    require pattern.jsdoc
+    
+    @ "Export all public functions"
+    require exports.public_functions
+    
+    @ "Size constraints"
+    warn file.lines > 150
+    deny file.lines > 300
+  }
+}

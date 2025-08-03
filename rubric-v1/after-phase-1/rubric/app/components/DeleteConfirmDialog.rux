@@ -1,0 +1,60 @@
+module DeleteConfirmDialog {
+  @ "Presentation component for delete confirmation dialog"
+  @ "Pure component with focus management and accessibility"
+
+  type: "presentation"
+  
+  location: "src/components/DeleteConfirmDialog.tsx"
+  
+  interface {
+    @ "Props interface"
+    public type DeleteConfirmDialogProps
+    
+    @ "Default export for the dialog component"
+    public function default() -> JSX.Element
+  }
+  
+  state {
+    @ "No local state - pure presentation component"
+  }
+  
+  imports {
+    @ "React"
+    allow "react" as external
+    
+    @ "Type imports"
+    allow "../types/expense.types" as types
+    
+    @ "Cannot import stores, services, or data"
+    deny imports ["../stores/*", "../services/*", "../data/*", "../utils/*"]
+  }
+  
+  constraints {
+    @ "Pure component - no side effects"
+    deny io.*
+    deny pattern.side_effects
+    
+    @ "Props-only data"
+    require pattern.props_only
+    
+    @ "No business logic"
+    deny pattern.business_logic
+    
+    @ "Accessibility requirements"
+    require pattern.aria_label
+    require pattern.keyboard_navigation
+    require pattern.focus_management
+    require pattern.aria_live
+    
+    @ "Dialog accessibility patterns"
+    require pattern.modal_focus_trap
+    require pattern.escape_key_handler
+    
+    @ "Testing support"
+    require pattern.data_testid
+    
+    @ "Size constraints"
+    warn file.lines > 80
+    deny file.lines > 120
+  }
+}

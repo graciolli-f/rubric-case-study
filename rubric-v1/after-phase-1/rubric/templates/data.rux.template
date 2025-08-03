@@ -1,0 +1,75 @@
+module [EntityName]Data {
+  @ "Data access layer for [entity]"
+  @ "Direct API/database calls only, no business logic"
+
+  type: "data"
+  
+  location: "src/data/[entity-name]-data.ts"
+  
+  interface {
+    @ "CRUD operations"
+    public function fetch[Entity]() -> Promise
+    public function fetch[Entities]() -> Promise
+    public function create[Entity]() -> Promise
+    public function update[Entity]() -> Promise
+    public function delete[Entity]() -> Promise
+    
+    @ "Specialized queries"
+    public function fetch[Entity]By[Criteria]() -> Promise
+    public function count[Entities]() -> Promise
+    public function exists[Entity]() -> Promise
+    
+    @ "Batch operations"
+    public function batchCreate[Entities]() -> Promise
+    public function batchUpdate[Entities]() -> Promise
+  }
+  
+  state {
+    @ "Connection/client references"
+    private client: Object
+    private apiEndpoint: string
+  }
+  
+  imports {
+    @ "Database/API client"
+    allow "../lib/supabase" as {supabase}
+    allow "../lib/api-client" as {apiClient}
+    allow "axios" as external
+    
+    @ "Types only"
+    allow "../types" as types
+    
+    @ "Data utilities"
+    allow "../utils/query-builder" as {buildQuery}
+    
+    @ "No business logic imports"
+    deny imports ["../services/*", "../stores/*"]
+    
+    @ "No UI imports"
+    deny imports ["../components/*", "../hooks/*"]
+  }
+  
+  constraints {
+    @ "Direct data operations only"
+    require pattern.singleton
+    deny pattern.business_logic
+    deny pattern.data_transformation @ "Return raw data"
+    
+    @ "Error handling"
+    require pattern.throwing @ "Let services handle errors"
+    
+    @ "Logging for debugging"
+    allow io.console.error
+    allow io.console.*
+    
+    @ "Network operations allowed"
+    allow io.network.*
+    
+    @ "Export restrictions"
+    deny exports.private_functions
+    
+    @ "Size constraints"
+    warn file.lines > 200
+    deny file.lines > 300
+  }
+}
