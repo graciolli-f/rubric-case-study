@@ -1,0 +1,91 @@
+module [UtilityName]Utils {
+  @ "Pure utility functions for [purpose]"
+  @ "No side effects, deterministic outputs"
+
+  type: "utility"
+  
+  location: "src/utils/[utility-name].ts"
+  
+  interface {
+    @ "Formatting functions"
+    public function format[Something]() -> string
+    public function parse[Something]() -> Object
+    
+    @ "Validation functions"
+    public function validate[Something]() -> boolean
+    public function is[Condition]() -> boolean
+    
+    @ "Transformation functions"
+    public function transform[Input]To[Output]() -> Object
+    public function normalize[Data]() -> Object
+    
+    @ "Calculation functions"
+    public function calculate[Metric]() -> number
+    public function aggregate[Data]() -> Object
+    
+    @ "Helper types and constants"
+    public readonly [CONSTANT_NAME]: Object
+    public type [HelperType]
+  }
+  
+  state {
+    @ "No mutable state allowed in utilities"
+    @ "Use module-level constants instead"
+    private readonly CONFIG = { }
+    private readonly REGEX_PATTERNS = { }
+  }
+  
+  imports {
+    @ "Types only"
+    allow "../types" as types
+    
+    @ "Pure external libraries"
+    allow "date-fns" as external
+    allow "lodash" as external
+    allow "ramda" as external
+    
+    @ "Other utilities for composition"
+    allow "./[other-util]" as {[specific, functions]}
+    
+    @ "No framework imports"
+    deny imports ["react", "vue", "@angular/*"]
+    
+    @ "No side-effect imports"
+    deny imports ["../stores/*", "../services/*", "../data/*"]
+    
+    @ "No component imports"
+    deny imports ["../components/*"]
+  }
+  
+  constraints {
+    @ "Pure functions only"
+    deny io.*  @ "No I/O operations"
+    deny pattern.side_effects
+    deny pattern.mutations
+    
+    @ "No async operations"
+    deny pattern.async
+    deny pattern.promises
+    
+    @ "Deterministic behavior"
+    require pattern.deterministic
+    deny pattern.random_without_seed
+    deny pattern.date_now @ "Use passed timestamps"
+    
+    @ "Error handling"
+    require pattern.defensive @ "Validate inputs"
+    
+    @ "Documentation"
+    require pattern.jsdoc @ "Document complex functions"
+    
+    @ "Testing"
+    require pattern.unit_testable
+    
+    @ "Export all public functions"
+    require exports.public_functions
+    
+    @ "Size constraints"
+    warn file.lines > 200
+    deny file.lines > 400
+  }
+}

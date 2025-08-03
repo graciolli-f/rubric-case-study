@@ -1,0 +1,66 @@
+module [HookName]Hook {
+  @ "Custom React hook for [specific purpose]"
+  @ "Encapsulates reusable logic for [use case]"
+
+  type: "hook"
+  
+  location: "src/hooks/use[HookName].ts"
+  
+  interface {
+    @ "Hook signature"
+    public function use[HookName]() -> Object
+  }
+  
+  state {
+    @ "Hook internal state"
+    private cache: Object
+    private subscribers: Object
+  }
+  
+  imports {
+    @ "React hooks"
+    allow "react" as external
+    
+    @ "Other hooks for composition"
+    allow "./use[OtherHook]" as {use[OtherHook]}
+    
+    @ "Can use stores"
+    allow "../stores/[store]" as {use[Store]}
+    
+    @ "Can use services"
+    allow "../services/[service]" as {[service]}
+    
+    @ "Types"
+    allow "../types" as types
+    
+    @ "Hook utilities"
+    allow "../utils/hooks" as {debounce, throttle}
+    
+    @ "Cannot import components"
+    deny imports ["../components/*"]
+    
+    @ "Cannot import data layer"
+    deny imports ["../data/*"]
+  }
+  
+  constraints {
+    @ "Must follow hooks rules"
+    require pattern.hooks @ "Must start with 'use'"
+    
+    @ "Error handling"
+    require pattern.error_boundary
+    
+    @ "Performance"
+    require pattern.memoization
+    
+    @ "Testing"
+    require pattern.unit_testable @ "Must be testable in isolation"
+    
+    @ "Export restrictions"
+    deny exports.private_functions
+    
+    @ "Size constraints"
+    warn file.lines > 150
+    deny file.lines > 250
+  }
+}

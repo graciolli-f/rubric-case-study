@@ -1,0 +1,73 @@
+module [StoreName]Store {
+  @ "State management for [feature/domain]"
+  @ "Coordinates between UI and services"
+
+  type: "store"
+  
+  location: "src/stores/[store-name]-store.ts"
+  
+  interface {
+    @ "Zustand store hook"
+    public function use[StoreName]Store() -> Object
+  }
+  
+  state {
+    @ "Internal state shape"
+    private _items: Array
+    private _currentItem: Object?
+    private _isLoading: boolean
+    private _error: string?
+    private _filters: Object
+    
+    @ "Optimistic update tracking"
+    private _optimisticUpdates: Object
+  }
+  
+  imports {
+    @ "State management library"
+    allow "zustand" as external
+    allow "immer" as external
+    
+    @ "Service layer for business logic"
+    allow "../services/[entity]-service" as {[entityService]}
+    
+    @ "Types"
+    allow "../types" as types
+    
+    @ "Error handling"
+    allow "../utils/errors" as {formatError}
+    
+    @ "Cannot import data layer directly"
+    deny imports ["../data/*"]
+    
+    @ "Cannot import components"
+    deny imports ["../components/*"]
+  }
+  
+  constraints {
+    @ "State management patterns"
+    require pattern.immutable
+    
+    @ "No business logic - delegate to services"
+    deny pattern.calculations
+    
+    @ "API calls only through services"
+    deny io.network.*
+    
+    @ "Storage through services"
+    deny io.localStorage.* @ "Use service layer for persistence"
+    
+    @ "DevTools support"
+    allow io.console.*
+    
+    @ "Performance"
+    require pattern.memoization
+    
+    @ "Export restrictions"
+    deny exports.private_functions
+    
+    @ "Size constraints"
+    warn file.lines > 200
+    deny file.lines > 400
+  }
+}
